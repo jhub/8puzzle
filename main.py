@@ -1,77 +1,127 @@
+#!/usr/bin/env python
 
-goal = 'b12345678'
+global_goal = 'b12345678'
+
+'''
+Dictionaries for user inputs
+'''
+
+func_dict = {	"setState"		:set_state,
+				"randomizeState":randomize_state,
+				"printState"	:print_state,
+				"move"			:move,
+				"solve"			:solve,
+				"maxNodes"		:max_nodes}
+
+alg_dict = {	"A-star"		:A_star,
+				"beam"			:beam}
+
+heur_dict = {	"h1"			:misplaced_tiles
+				"h2"			:}
 
 class state(object):
 
-    grid = None
+	grid = None
 
-    def __init__(self, layout):
-        if verify_grid(layout):
-            grid = layout
-        else raise ImportError
+	def __init__(self, layout):
+		if verify_grid(layout):
+			grid = layout
+		else:
+			raise ImportError
 
-    def set_state(self, state):
-        self.grid = state
+	def set_state(self, state):
+		self.grid = state
 
-    def randomize_state(self, n):
-        return #TODO
+	def randomize_state(self, n):
+		return #TODO
 
+'''
+Helpers
+'''
 def verify_grid(grid):
-    return True #TODO
+	return True #TODO
+
+def print_statistics(stats):
+	print "statistics" #TODO
+
+'''
+Algorithms
+'''
+#Use two heuristics to best 
+def A_star(H, start = curr_state ,goal = global_goal):
+	global heur_dict
+
+	try:
+		H_func 		= heur_dict[H]
+	except(KeyError e):
+		raise e
+
+
+
+#Keep only most likely branches
+def beam(state_count, start = curr_state ,goal = global_goal):
+
+
+'''
+Heuristic Functions
+'''
+def misplaced_distance(state, goal = global_goal):
+
+
+def Manhattan_distance(state, goal = global_goal):
+
+'''
+Commandline functions
+'''
+def set_state(state):
+	if verify_grid(layout):
+		grid = layout
+	else:
+		raise ImportError
+
+def randomize_state(moves):
+
+
+def print_state():
+
+
+def move(direction):
+	move_state
+
+
+def solve(args_in):
+	global alg_dict
+
+	alg, args 	= args_in.split(' ', 1 )
+	try:
+		stats 		= alg_dict[alg](args)
+	except(KeyError e):
+		raise e
+	print_statistics(stats)
+
+
+def max_nodes(max_amt_nodes)
+	global MAX_NODES
+
+	try:
+		MAX_NODES = int(max_amt_nodes)
+	except (ValueError v):
+		raise v
+
 
 if __name__ == '__main__':
+	global func_dict
 
-    input_var = input("Enter a command: ")
-    print (input_var)
+	input_var = raw_input('Enter a command: ')
 
-# function A*(start, goal)
-#     // The set of nodes already evaluated.
-#     closedSet := {}
-#     // The set of currently discovered nodes still to be evaluated.
-#     // Initially, only the start node is known.
-#     openSet := {start}
-#     // For each node, which node it can most efficiently be reached from.
-#     // If a node can be reached from many nodes, cameFrom will eventually contain the
-#     // most efficient previous step.
-#     cameFrom := the empty map
-
-#     // For each node, the cost of getting from the start node to that node.
-#     gScore := map with default value of Infinity
-#     // The cost of going from start to start is zero.
-#     gScore[start] := 0 
-#     // For each node, the total cost of getting from the start node to the goal
-#     // by passing by that node. That value is partly known, partly heuristic.
-#     fScore := map with default value of Infinity
-#     // For the first node, that value is completely heuristic.
-#     fScore[start] := heuristic_cost_estimate(start, goal)
-
-#     while openSet is not empty
-#         current := the node in openSet having the lowest fScore[] value
-#         if current = goal
-#             return reconstruct_path(cameFrom, current)
-
-#         openSet.Remove(current)
-#         closedSet.Add(current)
-#         for each neighbor of current
-#             if neighbor in closedSet
-#                 continue        // Ignore the neighbor which is already evaluated.
-#             // The distance from start to a neighbor
-#             tentative_gScore := gScore[current] + dist_between(current, neighbor)
-#             if neighbor not in openSet  // Discover a new node
-#                 openSet.Add(neighbor)
-#             else if tentative_gScore >= gScore[neighbor]
-#                 continue        // This is not a better path.
-
-#             // This path is the best until now. Record it!
-#             cameFrom[neighbor] := current
-#             gScore[neighbor] := tentative_gScore
-#             fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
-
-#     return failure
-
-function reconstruct_path(cameFrom, current)
-    total_path := [current]
-    while current in cameFrom.Keys:
-        current := cameFrom[current]
-        total_path.append(current)
-    return total_path
+	try:
+		if ' ' in input_var
+			fn_name, args = input_var.split(' ', 1 )
+			func_dict[fn_name](args)
+		else:
+			func_dict[input_var]()
+	except(KeyError e):
+		print("Invalid Argument")
+	except(ValueError v):
+		print("Invalid Argument")
+	print (input_var)
